@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### http test env ###
+/http/http-client.private.env.json
+
+### App Environment ###
 .env
 
 ### STS ###

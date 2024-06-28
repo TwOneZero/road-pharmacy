@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    # testContainer 에서 host, port, db name 을 자동으로 넣어줌
+    url: jdbc:tc:mariadb:11:///
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+kakao:
+  rest:
+    api:
+      key: ${KAKAO_REST_API_KEY}

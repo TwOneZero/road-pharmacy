@@ -3,13 +3,18 @@ package dev.roadfind.direction.service;
 
 import dev.roadfind.api.dto.DocumentDto;
 import dev.roadfind.direction.entity.Direction;
-import dev.roadfind.pharmacy.dto.PharmacyDto;
+import dev.roadfind.direction.repository.DirectionRepository;
 import dev.roadfind.pharmacy.service.PharmacySearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -20,6 +25,15 @@ public class DirectionService {
     private static final double RADIUS_KM = 10.0;
 
     private final PharmacySearchService pharmacySearchService;
+    private final DirectionRepository directionRepository;
+
+
+    @Transactional
+    public List<Direction> saveAll(List<Direction> directionList) {
+        if (CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
+
+        return directionRepository.saveAll(directionList);
+    }
 
     public List<Direction> buildDirectionList(DocumentDto documentDto) {
         // 클라이언트의 위도 경도 정보를 바탕으로 가까운 약국 3곳 추천

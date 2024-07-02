@@ -18,19 +18,19 @@ public class Direction extends BaseTimeEntity {
     private Long id;
     // 클라이언트 정보
     private String inputAddress;
-    private double inputLatitude;
-    private double inputLongitude;
+    private Double inputLatitude;
+    private Double inputLongitude;
     // 약국 정보
     private String targetPharmacyName;
     private String targetAddress;
-    private double targetLatitude;
-    private double targetLongitude;
-    private double distance;
+    private Double targetLatitude;
+    private Double targetLongitude;
+    private Double distance;
 
     protected Direction(){}
 
     @Builder
-    public Direction(String inputAddress, double inputLatitude, double inputLongitude, String targetPharmacyName, String targetAddress, double targetLatitude, double targetLongitude, double distance) {
+    public Direction(String inputAddress, Double inputLatitude, Double inputLongitude, String targetPharmacyName, String targetAddress, Double targetLatitude, Double targetLongitude, Double distance) {
         this.inputAddress = inputAddress;
         this.inputLatitude = inputLatitude;
         this.inputLongitude = inputLongitude;

@@ -36,7 +36,15 @@ spring:
     redis:
       port: 6379
       host: localhost
+server:
+  servlet:
+    encoding:
+      force-response: true
 
+pharmacy:
+  recommendation:
+    base:
+      url: http://localhost:8080/dir/
 ---
 spring:
   config:

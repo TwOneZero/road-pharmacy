@@ -1,6 +1,8 @@
 package dev.roadfind.direction.service
 
 import dev.roadfind.api.dto.DocumentDto
+import dev.roadfind.api.service.KakaoCategorySearchService
+import dev.roadfind.direction.repository.DirectionRepository
 import dev.roadfind.pharmacy.dto.PharmacyDto
 import dev.roadfind.pharmacy.service.PharmacySearchService
 import spock.lang.Specification
@@ -8,8 +10,13 @@ import spock.lang.Specification
 class DirectionServiceTest extends Specification {
 
     private PharmacySearchService pharmacySearchService = Mock()
+    private final KakaoCategorySearchService kakaoCategorySearchService = Mock()
+    private final DirectionRepository directionRepository = Mock()
+    private final Base62Service base62Service = Mock()
 
-    private DirectionService directionService = new DirectionService(pharmacySearchService)
+    private DirectionService directionService = new DirectionService(
+            pharmacySearchService, kakaoCategorySearchService, directionRepository, base62Service
+    )
 
     private List<PharmacyDto> pharmacyDtoList
 
@@ -54,7 +61,7 @@ class DirectionServiceTest extends Specification {
         then:
         result.size() == 2
         result.get(0).targetPharmacyName == "호수온누리약국"
-        result.get(1) .targetPharmacyName == "돌곶이온누리약국"
+        result.get(1).targetPharmacyName == "돌곶이온누리약국"
     }
 
     def "buildDirectionList - 정해진 반경 10km 이내로 검색"() {

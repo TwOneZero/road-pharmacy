@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,10 +26,13 @@ import java.util.stream.Collectors;
 public class DirectionService {
     private static final int MAX_SEARCH_COUNT = 3;
     private static final double RADIUS_KM = 10.0;
+    private static final String DIRECTION_BASE_URL = "https://map.kakao.com/link/map/";
+
 
     private final PharmacySearchService pharmacySearchService;
     private final KakaoCategorySearchService kakaoCategorySearchService;
     private final DirectionRepository directionRepository;
+    private final Base62Service base62Service;
 
 
     @Transactional
@@ -35,6 +40,20 @@ public class DirectionService {
         if (CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
 
         return directionRepository.saveAll(directionList);
+    }
+
+    public String searchDirectionUrlById(String encodedId) {
+        Long directionId = base62Service.decodeDirectionId(encodedId);
+        Direction direction = directionRepository.findById(directionId).orElse(null);
+        if (ObjectUtils.isEmpty(direction)) {
+            throw new RuntimeException("direction Url없음");
+        }
+        String directionUrlParams = String.join(",", direction.getTargetPharmacyName(),
+                String.valueOf(direction.getTargetLatitude()),
+                String.valueOf(direction.getTargetLongitude())
+        );
+        // 카카오 API 를 restTemplate 으로 요청할 때 이미 encoding 되어있음.
+        return UriComponentsBuilder.fromHttpUrl(DIRECTION_BASE_URL + directionUrlParams).toUriString();
     }
 
     public List<Direction> buildDirectionList(DocumentDto documentDto) {

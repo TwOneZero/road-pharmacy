@@ -27,7 +27,7 @@ public class PharmacyRecommendationService {
     private final Base62Service base62Service;
     private static final String ROAD_VIEW_BASE_URL = "https://map.kakao.com/link/roadview/";
 
-    @Value("%{pharmacy.recommendation.base.url}")
+    @Value("${pharmacy.recommendation.base.url}")
     private static String baseUrl;
 
 
@@ -43,8 +43,9 @@ public class PharmacyRecommendationService {
 
         var documentDto = kakaoApiResponseDto.documentDtoList().get(0);
 
-//        List<Direction> directionList = directionService.buildDirectionList(documentDto);
-        List<Direction> directionList = directionService.buildDirectionListByCategoryApi(documentDto);
+        List<Direction> directionList = directionService.buildDirectionList(documentDto);
+        // 레디스 기능을 적용해 보기 위해 DB에 저장된 데이터로 수정
+//        List<Direction> directionList = directionService.buildDirectionListByCategoryApi(documentDto);
 
         //추천된
         var directionEntityList = directionService.saveAll(directionList);

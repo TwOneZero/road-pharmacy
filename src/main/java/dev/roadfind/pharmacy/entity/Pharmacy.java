@@ -26,7 +26,8 @@ public class Pharmacy extends BaseTimeEntity{
     protected Pharmacy(){}
 
     @Builder
-    public Pharmacy(String pharmacyName, String pharmacyAddress, Double latitude, Double longitude) {
+    public Pharmacy(Long id, String pharmacyName, String pharmacyAddress, Double latitude, Double longitude) {
+        this.id = id;
         this.pharmacyName = pharmacyName;
         this.pharmacyAddress = pharmacyAddress;
         this.latitude = latitude;
